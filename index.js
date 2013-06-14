@@ -34,9 +34,10 @@ io.on('connection', function(socket){
 
 redis.on('message', function(channel, message){
 	message = JSON.parse(message);
-	message.receivers.forEach(function(receiver){
-		clients[receiver].forEach(function(socketid){
-			io.sockets.socket(socketid).emit(channel, message.data);
-		});	
+	if (message.receivers)
+		message.receivers.forEach(function(receiver){
+			clients[receiver].forEach(function(socketid){
+				io.sockets.socket(socketid).emit(channel, message.data);
+			});	
 	})
 });
