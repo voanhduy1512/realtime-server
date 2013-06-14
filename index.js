@@ -6,7 +6,7 @@ io.configure('production', function () {
 });
 
 var redis = require('redis-url').connect(process.env.REDISTOGO_URL);
-var channels = ['post'];
+var channels = ['post','chat'];
 channels.forEach(function(channel){
 	redis.subscribe(channel+'-channel');	
 	console.log('subscribe to channel ', channel)
