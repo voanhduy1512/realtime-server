@@ -34,6 +34,7 @@ io.on('connection', function(socket){
 
 redis.on('message', function(channel, message){
 	message = JSON.parse(message);
+<<<<<<< HEAD
 	message.receivers.forEach(function(receiver){
 		if (clients[receiver])
 			clients[receiver].forEach(function(socketid){
