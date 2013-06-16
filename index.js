@@ -6,7 +6,7 @@ io.configure('production', function () {
 });
 
 var redis = require('redis-url').connect(process.env.REDISTOGO_URL);
-var channels = ['post'];
+var channels = ['post','chat'];
 channels.forEach(function(channel){
 	redis.subscribe(channel+'-channel');	
 	console.log('subscribe to channel ', channel)
@@ -35,8 +35,9 @@ io.on('connection', function(socket){
 redis.on('message', function(channel, message){
 	message = JSON.parse(message);
 	message.receivers.forEach(function(receiver){
-		clients[receiver].forEach(function(socketid){
-			io.sockets.socket(socketid).emit(channel, message.data);
-		});	
+		if (clients[receiver])
+			clients[receiver].forEach(function(socketid){
+				io.sockets.socket(socketid).emit(channel, message.data);
+			});	
 	})
 });
